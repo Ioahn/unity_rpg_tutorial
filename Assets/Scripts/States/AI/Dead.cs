@@ -15,7 +15,7 @@ namespace RPG.AI.States
         {
             base.Enter();
 
-            controller.StopAttack();
+            controller.fighter.StopAttack();
             
             controller.GetComponent<NavMeshAgent>().enabled = false;
             controller.GetComponent<CapsuleCollider>().enabled = false;

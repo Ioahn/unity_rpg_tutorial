@@ -16,7 +16,16 @@ namespace RPG.AI.States
         {
             base.Enter();
 
-            controller.Attack();
+            MakeAttack();
+
+            controller.LastTimeSawPlayer = 0;
+        }
+
+        private void MakeAttack()
+        {
+            var player = GameObject.FindWithTag("Player");
+
+            controller.fighter.Attack(player);
         }
 
         public override void HandleInput()
@@ -24,7 +33,6 @@ namespace RPG.AI.States
             base.HandleInput();
 
             chase = controller.IsChase();
-
         }
 
         public override void LogicUpdate()
@@ -35,8 +43,9 @@ namespace RPG.AI.States
             
             if (!chase)
             {
-                controller.StopAttack();
-                state.ChangeState(controller.StandingState);    
+                controller.fighter.StopAttack(); 
+                
+                state.ChangeState(controller.SuspiciousState);    
             }
         }
     }

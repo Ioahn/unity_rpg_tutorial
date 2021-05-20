@@ -1,35 +1,59 @@
-﻿using RPG.AI.States;
+﻿using System;
+using RPG.AI.States;
 using RPG.Combat;
 using RPG.Core;
+using RPG.Movement;
 using UnityEngine;
 
 namespace RPG.Control
 {
     public class AIController : MonoBehaviour
     {
-        [SerializeField] private float chaceDistance = 5f;
+        [SerializeField] public float chaceDistance = 5f;
         [SerializeField] public float suspiciosTime = 5f;
+        [SerializeField] public float waypointTolerance = 1.0f;
+        [SerializeField] public float patrolDelay = 3.0f;
+        [SerializeField] public PatrolPath path;
+
+        internal Fighter fighter;
+        internal Mover mover;
         
-        public State<AIController> MoveState;
+        public State<AIController> PatrolState;
         public State<AIController> AttackState;
-        public State<AIController> StandingState;
+        public State<AIController> ObserveState;
         public State<AIController> DeadState;
+        public State<AIController> SuspiciousState;
         
         public StateMachine<AIController> fsm;
+
+        internal Vector3 guardPosition;
+        
+        public float LastTimeSawPlayer { set; get; }
         
         #region monobehaviout callback
         private void Start()
         {
-            fsm = new StateMachine<AIController>();
+            guardPosition = transform.position;
             
-            MoveState = new Move(this, fsm);
-            AttackState = new Attack(this, fsm);
-            StandingState = new Standing(this, fsm);
-            DeadState = new Dead(this, fsm);
+            fighter = GetComponent<Fighter>();
+            mover = GetComponent<Mover>();
             
-            fsm.Initialize(StandingState);
+            StateInit();
         }
- 
+
+        private void StateInit()
+        {
+            fsm = new StateMachine<AIController>();
+
+            PatrolState = new Patrol(this, fsm);
+            AttackState = new Attack(this, fsm);
+            ObserveState = new Observe(this, fsm);
+            DeadState = new Dead(this, fsm);
+            SuspiciousState = new Suspicious(this, fsm);
+
+            fsm.Initialize(ObserveState);
+        }
+
         private void Update()
         {
             fsm.CurrentState.HandleInput();
@@ -51,18 +75,12 @@ namespace RPG.Control
             var distance = Vector3.Distance(player.transform.position, transform.position);
 
             return distance < chaceDistance;
-        } 
-        
-        public void Attack()
-        {
-            var player = GameObject.FindWithTag("Player");
-            
-            GetComponent<Fighter>().Attack(player);
         }
 
-        public void StopAttack()
+        private void OnDrawGizmos()
         {
-            GetComponent<Fighter>().StopAttack();    
+            Gizmos.color = Color.red;
+            Gizmos.DrawWireSphere(transform.position, chaceDistance);
         }
     }
 }

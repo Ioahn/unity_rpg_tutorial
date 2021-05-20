@@ -18,8 +18,9 @@
         public void ChangeState(State<T> newState)
         {
             CurrentState.Exit();
-
+            
             CurrentState = newState;
+            
             newState.Enter();
         }
     }

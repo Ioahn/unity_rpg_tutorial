@@ -12,11 +12,11 @@ namespace RPG.Helpers
             return list.Select(fn);
         }
         
-        public static void ForEach<T>(IEnumerable<T> list, Action<T> fn)
+        public static void ForEach<T>(IEnumerable<T> list, Action<T, int, IEnumerable<T>> fn)
         {
-            foreach (var el in list)
+            for (int i = 0; i < list.Count(); i++)
             {
-                fn(el);
+                fn(list.ElementAt(i), i, list);
             }
         }
         

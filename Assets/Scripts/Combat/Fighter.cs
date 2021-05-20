@@ -72,7 +72,7 @@ namespace RPG.Combat
                 _target = combatTarget.transform;       
             }
         }
-        
+
         public void StopAttack()
         {
             _target = null;
