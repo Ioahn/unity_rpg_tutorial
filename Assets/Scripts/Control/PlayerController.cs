@@ -50,6 +50,8 @@ namespace RPG.Control
 
         public void SetTargetAttack([CanBeNull] GameObject target)
         {
+            if (target == null) GetComponent<Fighter>().StopAttack();
+            
             if (target != null) GetComponent<Fighter>().Attack(target);
         }
 

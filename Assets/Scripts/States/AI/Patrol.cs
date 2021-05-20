@@ -25,7 +25,10 @@ namespace RPG.AI.States
         {
             base.HandleInput();
 
-            GoToNextPosition();
+            if (_coroutine != null)
+            {
+                GoToNextPosition();    
+            }
 
             _waitingTime = 0;
         }
@@ -33,6 +36,13 @@ namespace RPG.AI.States
         public override void LogicUpdate()
         {
             base.LogicUpdate();
+
+            if (_coroutine == null)
+            {
+                GoToNextPosition();
+
+                return;
+            }
             
             if (AtWaypoint())
             {

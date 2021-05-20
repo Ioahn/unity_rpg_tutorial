@@ -1,4 +1,5 @@
-﻿using RPG.Movement;
+﻿using JetBrains.Annotations;
+using RPG.Movement;
 using UnityEngine;
 
 namespace RPG.Combat
@@ -65,9 +66,9 @@ namespace RPG.Combat
             }
         }
 
-        public void Attack(GameObject combatTarget)
+        public void Attack([CanBeNull] GameObject combatTarget)
         {
-            if (!combatTarget.GetComponent<Health>().isDead)
+            if (combatTarget != null && !combatTarget.GetComponent<Health>().isDead)
             {
                 _target = combatTarget.transform;       
             }

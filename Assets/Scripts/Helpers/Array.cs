@@ -24,13 +24,5 @@ namespace RPG.Helpers
         {
             return list.Where(fn);
         }
-        
-        /*Не работает как надо*/
-        public static T Find<T>(IEnumerable<T> list, Func<T, bool> fn)
-        {
-            var newList = list.Where(fn);
-
-            return newList.FirstOrDefault();
-        }
     }
 }
