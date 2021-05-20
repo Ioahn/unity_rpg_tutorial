@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ContentModelStore">
+    <e p="C:\Users\dzhon\AppData\Local\JetBrains\Rider2020.2\extResources" t="IncludeRecursive" />
+    <e p="C:\Users\dzhon\AppData\Local\JetBrains\Rider2020.2\resharper-host\Local\Transient\Rider\v202\SolutionCaches\_New Unity Project.-1669774361.00" t="ExcludeRecursive" />
+    <e p="D:\UnityProjects\New Unity Project" t="IncludeRecursive">
+      <e p="Assembly-CSharp.csproj" t="IncludeRecursive" />
+      <e p="Assets" t="Include">
+        <e p="Asset Packs" t="Include">
+          <e p="Animations by Explosive" t="Include">
+            <e p="README - Usage Rights for these assets 1.txt" t="Include" />
+          </e>
+          <e p="Synty - Polygon Student Sample" t="Include">
+            <e p="README - Usage Rights for these assets.txt" t="Include" />
+          </e>
+        </e>
+        <e p="Scripts" t="Include">
+          <e p="Combat" t="Include">
+            <e p="CombatTarget.cs" t="Include" />
+            <e p="Fighter.cs" t="Include" />
+            <e p="Health.cs" t="Include" />
+          </e>
+          <e p="Control" t="Include">
+            <e p="AIController.cs" t="Include" />
+            <e p="PatrolPath.cs" t="Include" />
+            <e p="PlayerController.cs" t="Include" />
+          </e>
+          <e p="Core" t="Include">
+            <e p="FollowCamera.cs" t="Include" />
+            <e p="State.cs" t="Include" />
+            <e p="StateMachine.cs" t="Include" />
+          </e>
+          <e p="Helpers" t="Include">
+            <e p="Array.cs" t="Include" />
+          </e>
+          <e p="Movement" t="Include">
+            <e p="Mover.cs" t="Include" />
+          </e>
+          <e p="States" t="Include">
+            <e p="AI" t="Include">
+              <e p="Attack.cs" t="Include" />
+              <e p="Dead.cs" t="Include" />
+              <e p="Existance.cs" t="Include" />
+              <e p="Observe.cs" t="Include" />
+              <e p="Patrol.cs" t="Include" />
+              <e p="Searching.cs" t="Include" />
+              <e p="suspicious.cs" t="Include" />
+            </e>
+            <e p="Player" t="Include">
+              <e p="Attack.cs" t="Include" />
+              <e p="Dead.cs" t="Include" />
+              <e p="Existance.cs" t="Include" />
+              <e p="Move.cs" t="Include" />
+              <e p="Standing.cs" t="Include" />
+            </e>
+          </e>
+        </e>
+      </e>
+      <e p="New Unity Project.sln" t="IncludeFlat" />
+      <e p="obj" t="ExcludeRecursive" />
+      <e p="Packages" t="ExcludeRecursive" />
+      <e p="Temp\bin" t="ExcludeRecursive" />
+    </e>
+  </component>
+</project>
