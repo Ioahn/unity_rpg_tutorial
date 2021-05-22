@@ -13,6 +13,8 @@ namespace RPG.Control
         public State<PlayerController> AttackState;
         public State<PlayerController> StandingState;
         public State<PlayerController> DeadState;
+        public State<PlayerController> StoppedState;
+        
         public StateMachine<PlayerController> fsm;
 
         #region monobehaviout callback
@@ -25,6 +27,7 @@ namespace RPG.Control
             AttackState = new Attack(this, fsm);
             StandingState = new Standing(this, fsm);
             DeadState = new Dead(this, fsm);
+            StoppedState = new Stopped(this, fsm);
             
             fsm.Initialize(StandingState);
         }
