@@ -1,32 +1,31 @@
-﻿using RPG.Combat;
-using RPG.Control;
+﻿using RPG.Control;
 using RPG.Core;
 using UnityEngine;
 
 namespace RPG.Player.States
 {
-    public class Attack: Existance
+    public class Attack: AnyState
     {
-        private bool isMouseButtonHold;
         private bool targetIsKilled;
-        public Attack(PlayerController controller, StateMachine<PlayerController> state) : base(controller, state)
+        private bool isShiftHold;
+        private bool isAttackBegan = false;
+        
+        public Attack(PlayerStateManager stateManager, StateMachine<PlayerStateManager> state, PlayerController playerController) : base(stateManager, state, playerController)
         {
         }
 
         public override void Enter()
         {
             base.Enter();
-            
-            isMouseButtonHold = false;
-            
-            controller.AttackTarget();
+
+            _playerController.StopMovement();
         }
 
         public override void HandleInput()
         {
             base.HandleInput();
-
-            isMouseButtonHold = Input.GetMouseButtonDown(0);
+            
+            isShiftHold = Input.GetKey(KeyCode.LeftShift);
         }
 
         public override void LogicUpdate()
@@ -34,10 +33,18 @@ namespace RPG.Player.States
             base.LogicUpdate();
             
             if (state.HasState<Dead>()) return;
-            
-            if (isMouseButtonHold && !controller.OnTargetFighterHit(out _))
+
+            if (isShiftHold && !isAttackBegan)
             {
-                state.ChangeState(controller.StandingState);
+                isAttackBegan = true;
+                _playerController.Attack();
+            }
+            else if (!isShiftHold)
+            {
+                isAttackBegan = false;
+                _playerController.StopAttack();
+                
+                state.ChangeState(stateManager.StandingState);
             }
         }
     }

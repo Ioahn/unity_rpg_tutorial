@@ -1,14 +1,18 @@
 ﻿using RPG.Combat;
 using RPG.Control;
 using RPG.Core;
+using UnityEngine;
 
-namespace RPG.AI.States
+namespace RPG.Player.States
 {
-    public class Existance: State<AIController>
+    public class AnyState: State<PlayerStateManager>
     {
         private bool isDead;
-        public Existance(AIController controller, StateMachine<AIController> state) : base(controller, state)
+        protected readonly PlayerController _playerController;
+        
+        public AnyState(PlayerStateManager stateManager, StateMachine<PlayerStateManager> state, PlayerController playerController) : base(stateManager, state)
         {
+            _playerController = playerController;
         }
 
         public override void HandleInput()

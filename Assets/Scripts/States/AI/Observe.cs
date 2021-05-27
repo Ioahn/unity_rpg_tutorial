@@ -16,7 +16,7 @@ namespace RPG.AI.States
         {
             base.HandleInput();
 
-            chase = controller.IsChase();
+            chase = stateManager.IsChase();
         }
 
         public override void LogicUpdate()
@@ -27,12 +27,12 @@ namespace RPG.AI.States
 
             if (chase)
             {
-                state.ChangeState(controller.AttackState);
+                state.ChangeState(stateManager.AttackState);
             }
             
             if (state.HasState<Observe>())
             {
-                state.ChangeState(controller.PatrolState);
+                state.ChangeState(stateManager.PatrolState);
             }
         }
     }

@@ -3,9 +3,9 @@ using RPG.Core;
 
 namespace RPG.Player.States
 {
-    public class Dead: State<PlayerController>
+    public class Dead: State<PlayerStateManager>
     {
-        public Dead(PlayerController controller, StateMachine<PlayerController> state) : base(controller, state)
+        public Dead(PlayerStateManager stateManager, StateMachine<PlayerStateManager> state) : base(stateManager, state)
         {
         }
     }

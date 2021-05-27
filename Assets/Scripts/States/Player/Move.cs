@@ -6,15 +6,25 @@ namespace RPG.Player.States
 {
     public class Move: Standing
     {
-        public Move(PlayerController controller, StateMachine<PlayerController> state) : base(controller, state)
+        public Move(PlayerStateManager stateManager, StateMachine<PlayerStateManager> state, PlayerController playerController) : base(stateManager, state, playerController)
         {
         }
-
+        
         public override void Enter()
         {
             base.Enter();
 
-            controller.MoveToCursor();
+            _playerController.MoveToCursor();
+        }
+
+        public override void LogicUpdate()
+        {
+            base.LogicUpdate();
+
+            if (_playerController.HasArrived())
+            {
+                state.ChangeState(stateManager.StandingState);
+            }
         }
     }
 }

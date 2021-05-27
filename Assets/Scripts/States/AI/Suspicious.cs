@@ -21,16 +21,16 @@ namespace RPG.AI.States
          {
              base.HandleInput();
 
-             controller.LastTimeSawPlayer += Time.deltaTime;
+             stateManager.LastTimeSawPlayer += Time.deltaTime;
          }
 
          public override void LogicUpdate()
          {
              base.LogicUpdate();
 
-             if (controller.LastTimeSawPlayer > controller.suspiciosTime)
+             if (stateManager.LastTimeSawPlayer > stateManager.suspiciosTime)
              {
-                state.ChangeState(controller.ObserveState);      
+                state.ChangeState(stateManager.ObserveState);      
              }
          }
     }

@@ -2,12 +2,12 @@
 {
     public abstract class State<T>
     {
-        public T controller;
+        public T stateManager;
         public StateMachine<T> state;
         
-        protected State(T controller, StateMachine<T> state)
+        protected State(T stateManager, StateMachine<T> state)
         {
-            this.controller = controller;
+            this.stateManager = stateManager;
             this.state = state;
         }
 

@@ -4,11 +4,13 @@ using UnityEngine;
 
 namespace RPG.Player.States
 {
-    public class Standing: Existance
+    public class Standing: AnyState
     {
         private bool isMouseButtonPressOnce;
         private bool isMouseButtonHold;
-        public Standing(PlayerController controller, StateMachine<PlayerController> state) : base(controller, state)
+        private bool isShiftHold;
+
+        public Standing(PlayerStateManager stateManager, StateMachine<PlayerStateManager> state, PlayerController playerController) : base(stateManager, state, playerController)
         {
         }
 
@@ -26,27 +28,20 @@ namespace RPG.Player.States
 
             isMouseButtonPressOnce = Input.GetMouseButtonDown(0);
             isMouseButtonHold = Input.GetMouseButton(0) && !Input.GetMouseButtonDown(0);
+            isShiftHold = Input.GetKey(KeyCode.LeftShift);
         }
 
         public override void LogicUpdate()
         {
             base.LogicUpdate();
+
+            if (isShiftHold) state.ChangeState(stateManager.AttackState);
             
             if (state.HasState<Dead>()) return;
-            
-            if (isMouseButtonPressOnce)
-            {
-                if (controller.OnTargetFighterHit(out _)) state.ChangeState(controller.AttackState);
-            }
 
             if (isMouseButtonHold)
             {
-                state.ChangeState(controller.MouseMoveState);
-            }
-
-            if (!isMouseButtonPressOnce && !isMouseButtonHold)
-            {
-                state.ChangeState(controller.StandingState);    
+                state.ChangeState(stateManager.MouseMoveState);
             }
         }
     }

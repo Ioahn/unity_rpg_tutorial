@@ -34,5 +34,10 @@ namespace RPG.Movement
         {
             nav.isStopped = true;
         }
+
+        public bool HasArrived()
+        {
+            return Vector3.Magnitude(nav.velocity) == 0;
+        }
     }
 }

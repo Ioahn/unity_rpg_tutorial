@@ -4,9 +4,9 @@ using RPG.Movement;
 
 namespace RPG.Player.States
 {
-    public class Stopped: State<PlayerController>
+    public class Stopped: State<PlayerStateManager>
     {
-        public Stopped(PlayerController controller, StateMachine<PlayerController> state) : base(controller, state)
+        public Stopped(PlayerStateManager stateManager, StateMachine<PlayerStateManager> state) : base(stateManager, state)
         {
         }
 
@@ -14,7 +14,9 @@ namespace RPG.Player.States
         {
             base.Enter();
             
-            controller.GetComponent<Mover>().Stop();
+            stateManager.GetComponent<Mover>().Stop();
         }
+        
+        
     }
 }

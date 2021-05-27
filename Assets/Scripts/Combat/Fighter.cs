@@ -1,9 +1,67 @@
-﻿using JetBrains.Annotations;
+﻿using System;
+using System.Collections;
+using JetBrains.Annotations;
 using RPG.Movement;
 using UnityEngine;
 
+
+
 namespace RPG.Combat
 {
+    enum GrimuarPosition
+    {
+        Left, Right
+    }
+    
+    interface ISpell
+    {
+        float GetDamage();
+
+        float GetAnimationDuration();
+
+    }
+
+    interface IInvetory
+    {
+        Grimuar GetGrimuar();
+    }
+
+    interface IGrimuar
+    {
+        Spell GetSpell(int i);
+    }
+    
+    public class Inventory: IInvetory
+    {
+        public Grimuar GetGrimuar()
+        {
+            return new Grimuar();
+        }
+    }
+
+
+    public class Spell: ISpell
+    {
+        public float GetDamage()
+        {
+            return 20f;
+        }
+
+        public float GetAnimationDuration()
+        {
+            return 1f;
+        }
+    }
+
+
+    public class Grimuar: IGrimuar
+    {
+        public Spell GetSpell(int i)
+        {
+            return new Spell();    
+        }
+    }
+
     [RequireComponent(typeof(Health))]
     public class Fighter : MonoBehaviour
     {
@@ -16,10 +74,10 @@ namespace RPG.Combat
         
         private Transform _target;
         private float timeSinceLastAttack = 0;
+
         private void Update()
         {
             timeSinceLastAttack += Time.deltaTime;
-            MoveToTarget();
         }
 
         private void MoveToTarget()
@@ -59,24 +117,48 @@ namespace RPG.Combat
             var targetHealth = _target.GetComponent<Health>();
             
             targetHealth.TakeDamage(weaponDamage);
-
-            if (targetHealth.isDead)
-            {
-                StopAttack();
-            }
         }
 
-        public void Attack([CanBeNull] GameObject combatTarget)
+        public IEnumerator Attack()
         {
-            if (combatTarget != null && !combatTarget.GetComponent<Health>().isDead)
+            while (true)
             {
-                _target = combatTarget.transform;       
+                var input = AwaitInput();
+                yield return input;
+
+                var grimuar = GetGrimuar((GrimuarPosition)input.Current);
+
+                var spell = grimuar.GetSpell(1);
+
+                yield return new WaitForSeconds(spell.GetAnimationDuration());
+                
+                Debug.Log("lalal");
             }
+
         }
 
-        public void StopAttack()
+        private Grimuar GetGrimuar(GrimuarPosition grimuarPosition)
         {
-            _target = null;
+            return new Inventory().GetGrimuar();
+        }
+
+        private IEnumerator AwaitInput()
+        {
+            var done = true;
+
+            while (done)
+            {
+                GrimuarPosition? result = (Input.GetMouseButtonDown(0), Input.GetMouseButtonDown(1)) switch
+                {
+                    (true, _) => GrimuarPosition.Left,
+                    (_, true) => GrimuarPosition.Right,
+                    _ => null 
+                };
+                
+                done = result == null;
+
+                yield return result;
+            }
         }
     }
 }

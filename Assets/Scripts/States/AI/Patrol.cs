@@ -46,7 +46,7 @@ namespace RPG.AI.States
             
             if (AtWaypoint())
             {
-                if (_waitingTime < controller.patrolDelay)
+                if (_waitingTime < stateManager.patrolDelay)
                 {
                     _waitingTime += Time.deltaTime;
                     return;
@@ -63,7 +63,7 @@ namespace RPG.AI.States
 
         private void GoToNextPosition()
         {
-            controller.mover.Move(_nextPosition);
+            stateManager.mover.Move(_nextPosition);
         }
         
         private Vector3 GetCurrentWaypoint()
@@ -81,9 +81,9 @@ namespace RPG.AI.States
 
         private bool AtWaypoint()
         {
-            float distanceToWaypoint = Vector3.Distance(controller.transform.position, _nextPosition);
+            float distanceToWaypoint = Vector3.Distance(stateManager.transform.position, _nextPosition);
 
-            return distanceToWaypoint < controller.waypointTolerance;
+            return distanceToWaypoint < stateManager.waypointTolerance;
         }
     }
 }
