@@ -5,11 +5,6 @@ using RPG.Combat;
 using RPG.Movement;
 using UnityEngine;
 
-interface IGrimuar
-{
-    
-}
-
 namespace RPG.Control
 {
     public class PlayerController : MonoBehaviour
@@ -67,11 +62,6 @@ namespace RPG.Control
             return Camera.main.ScreenPointToRay(Input.mousePosition);
         }
 
-        public  void AddToCombo()
-        {
-                    
-        }
-        
         public void Attack()
         {
             _attackCourutine = GetComponent<Fighter>().Attack();

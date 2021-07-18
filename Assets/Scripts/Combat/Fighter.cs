@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections;
-using JetBrains.Annotations;
+﻿using System.Collections;
 using RPG.Movement;
 using UnityEngine;
 
@@ -8,61 +6,8 @@ using UnityEngine;
 
 namespace RPG.Combat
 {
-    enum GrimuarPosition
-    {
-        Left, Right
-    }
-    
-    interface ISpell
-    {
-        float GetDamage();
-
-        float GetAnimationDuration();
-
-    }
-
-    interface IInvetory
-    {
-        Grimuar GetGrimuar();
-    }
-
-    interface IGrimuar
-    {
-        Spell GetSpell(int i);
-    }
-    
-    public class Inventory: IInvetory
-    {
-        public Grimuar GetGrimuar()
-        {
-            return new Grimuar();
-        }
-    }
-
-
-    public class Spell: ISpell
-    {
-        public float GetDamage()
-        {
-            return 20f;
-        }
-
-        public float GetAnimationDuration()
-        {
-            return 1f;
-        }
-    }
-
-
-    public class Grimuar: IGrimuar
-    {
-        public Spell GetSpell(int i)
-        {
-            return new Spell();    
-        }
-    }
-
     [RequireComponent(typeof(Health))]
+    [RequireComponent(typeof(ComboSystem))]
     public class Fighter : MonoBehaviour
     {
         [SerializeField] float weaponRange = 2f;
@@ -71,6 +16,7 @@ namespace RPG.Combat
         
         [SerializeField] private Mover mover;
         [SerializeField] Animator animator;
+        [SerializeField] private ComboSystem _comboSystem;
         
         private Transform _target;
         private float timeSinceLastAttack = 0;
@@ -124,38 +70,54 @@ namespace RPG.Combat
             while (true)
             {
                 var input = AwaitInput();
-                yield return input;
-
-                var grimuar = GetGrimuar((GrimuarPosition)input.Current);
-
-                var spell = grimuar.GetSpell(1);
-
-                yield return new WaitForSeconds(spell.GetAnimationDuration());
                 
-                Debug.Log("lalal");
+                yield return input;
+                
+                var order = _comboSystem.AddToQueue((GrimoireOrder)input.Current);
+
+                var idle = Idle(1f);
+                
+                yield return idle;
+
+                if (!(bool) idle.Current)
+                {
+                    _comboSystem.ClearQueue();    
+                }
+            }
+        }
+
+        private IEnumerator Idle(float awaitTime)
+        {
+            float time = 0f;
+            bool pressed = false;
+
+            while (time <= awaitTime && !pressed)
+            {
+                time += Time.deltaTime;
+
+                pressed = Input.GetMouseButtonDown(0) || Input.GetMouseButtonDown(1);
+
+                yield return null;
             }
 
+            yield return pressed;
         }
 
-        private Grimuar GetGrimuar(GrimuarPosition grimuarPosition)
-        {
-            return new Inventory().GetGrimuar();
-        }
 
         private IEnumerator AwaitInput()
         {
-            var done = true;
+            var done = false;
 
-            while (done)
+            while (!done)
             {
-                GrimuarPosition? result = (Input.GetMouseButtonDown(0), Input.GetMouseButtonDown(1)) switch
+                GrimoireOrder? result = (Input.GetMouseButtonDown(0), Input.GetMouseButtonDown(1)) switch
                 {
-                    (true, _) => GrimuarPosition.Left,
-                    (_, true) => GrimuarPosition.Right,
+                    (true, _) => GrimoireOrder.First,
+                    (_, true) => GrimoireOrder.Second,
                     _ => null 
                 };
                 
-                done = result == null;
+                done = result != null;
 
                 yield return result;
             }

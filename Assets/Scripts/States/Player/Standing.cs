@@ -27,19 +27,22 @@ namespace RPG.Player.States
             base.HandleInput();
 
             isMouseButtonPressOnce = Input.GetMouseButtonDown(0);
-            isMouseButtonHold = Input.GetMouseButton(0) && !Input.GetMouseButtonDown(0);
             isShiftHold = Input.GetKey(KeyCode.LeftShift);
         }
 
         public override void LogicUpdate()
         {
             base.LogicUpdate();
-
-            if (isShiftHold) state.ChangeState(stateManager.AttackState);
             
             if (state.HasState<Dead>()) return;
+            
+            if (isShiftHold)
+            {
+                state.ChangeState(stateManager.AttackState);
+                return;
+            };
 
-            if (isMouseButtonHold)
+            if (isMouseButtonHold || isMouseButtonPressOnce)
             {
                 state.ChangeState(stateManager.MouseMoveState);
             }
